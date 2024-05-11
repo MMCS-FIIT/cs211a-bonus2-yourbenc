@@ -2,6 +2,8 @@
 
 namespace SimpleTGBot;
 
+using System.Data.SqlTypes;
+using System.Formats.Asn1;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -89,13 +91,15 @@ public class TelegramBot
             {
                 if (message.Text.ToLower() == "/start")
                 {
+                    Console.WriteLine($"Был нажат /start в чате {chatId}");
                     Message sentMessage = await botClient.SendTextMessageAsync(
                         chatId: chatId,
-                        text: $"На сервере запрещено:\n*использование читов, распрыжек, скриптов и прочих хитростей;\n*использование спреев - обманок и спреев с эротическим содержанием;\nиспользование уязвимостей карт;\n*мат в любом проявлении\n(слово сука хоть и литературное, но на сервере расценивается как мат);\n*оскорбления игроков;\n*использование нечитаемых ников, ников содежащих мат, цифровых ников.\nВсё это карается баном\n\nСписок команд:\n/ChangeSeparator - добавить разделитель, ставящийся между словами(крутым парням рекомендуется точка или тире) - по умолчанию пробел\n/ChangeFrames - выбрать рамки для сообщений",
+                        text: $"На сервере запрещено:\n*использование читов, распрыжек, скриптов и прочих хитростей;\n*использование спреев - обманок и спреев с эротическим содержанием;\nиспользование уязвимостей карт;\n*мат в любом проявлении\n(слово сука хоть и литературное, но на сервере расценивается как мат);\n*оскорбления игроков;\n*флуд и крики в голосовой чат\nВсё это карается баном\n\nДанный бот переводит ваши сообщения с русского языка на язык жителей серверов CS 1.6. \n\nСписок дополнительных команд:\n/ChangeSeparator - добавить разделитель, ставящийся между словами(крутым парням рекомендуется точка или тире) - по умолчанию пробел\n/ChangeFrames - выбрать рамки для сообщений\n/GetCoolKeyboard - получить архив с раскладкой для Windows, которая вместо русских букв пишет BOT_Takue(делал не я!)\n",
                         cancellationToken: cancellationToken);
                 }
                 else if (message.Text.ToLower() == "/changeseparator")
                 {
+                    Console.WriteLine($"Запрос на смену разделителей в чате {chatId}");
                     Message sentMessage = await botClient.SendTextMessageAsync(
                         chatId: chatId,
                         text: $"Введите новый разделитель(если хотите вернуть пробел, то напишите 'пробел')",
@@ -105,6 +109,7 @@ public class TelegramBot
                 }
                 else if (message.Text.ToLower() == "/changeframes")
                 {
+                    Console.WriteLine($"Запрос на смену рамок в чате {chatId}");
                     Message sentMessage = await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: "Выберите рамку из предложенного списка:",
@@ -112,6 +117,20 @@ public class TelegramBot
                     cancellationToken: cancellationToken);
                     state = States.FrameChange;
                     return;
+                }
+                else if (message.Text.ToLower() == "/getcoolkeyboard")
+                {
+                    // Message newMessage = await botClient.SendDocumentAsync(
+                    // chatId: chatId,
+                    // document: InputFile.FromUri("https://vk.com/doc652669605_676120367?hash=w6dIn8q8zXzuEIKplHHIZv26JZaJBR9VASJnIlkYgZ4&dl=FKUEuAASuldgtrnlh46pY9NqGwG5Rz1vrTRIV55TBFo"),
+                    // parseMode: ParseMode.Html,
+                    // cancellationToken: cancellationToken);
+                    // return;
+                    Console.WriteLine($"Запрос на скачивание клавиатуры в чате {chatId}");
+                    Message sentMessage = await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "А ФИГУШКИ потому что у меня ошибка с отправлением файлов, которую я не понял, как решить. Только такая ссылка: https://vk.cc/cwKzIs (раскладка заменяет якутскую!)",
+                        cancellationToken: cancellationToken);
                 }
                 else
                 {
@@ -132,6 +151,7 @@ public class TelegramBot
             }
             else if (message.Location != null)
             {
+                Console.WriteLine($"Получено сообщение в чате {chatId}: геолокация");
                 Message newMessage = await botClient.SendTextMessageAsync(
                 chatId: chatId,
                 text: "Адрес записан, ожидайте гостей",
@@ -143,6 +163,14 @@ public class TelegramBot
                 Message newMessage = await botClient.SendTextMessageAsync(
                 chatId: chatId,
                 text: "Классное видео братан я под столом",
+                cancellationToken: cancellationToken);
+            }
+            else
+            {
+                Console.WriteLine($"Получено сообщение в чате {chatId}: что-то левое");
+                Message newMessage = await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: "Напоминаю: флуд карается БАНОМ",
                 cancellationToken: cancellationToken);
             }
         }
