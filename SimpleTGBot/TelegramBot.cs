@@ -17,6 +17,7 @@ public class TelegramBot
     public string left_frame = "";
     public string right_frame = "";
     private States state = States.Normal;
+    private static string CoolNicknames = $"KAHUCTPA_CTAPOrO_/7UBA\n-=JIEB0JlU6EPAJI=-\nCtPoūMaTePuAJIbl\n[CMyTa]/7paBocλaBHblú_/7apeHb\n^ocTpbIe.^.ko3bIpbku^[adidas///]\nHET.nOCTOU.9.UCnPABλIOCb\nync...Tbl-MEPTB\n[JAM]ku6ep_rAHg]|[y6ac\n.:.:.:. KpoJIuK .:.:.:.\n-λAga_rPaHTa - (HoMep-_-CKpblT)-\nCoM_Kλ|-0HyJI_Ha_4epB9l[WtF?(⊙_⊙)?]\n7oMyHKyJI-_-Vs-_-CJIoBapb\n[PRO]ka3Huk_keMepoBo\ncblH_dust2x2\nx✞x.AHrEJI.XOPOHuTEJIb.x✞x\n[6e36aLLIEHHb|ŭ] KPAH\n---NISSAN---\nOKyHb_B_CyI7E\nhihihi_smotrite_4MO\n-jezus777-vs-666bafomet-\nPa6_6yprepa [USA]\n(eXxXTRA)BaraHTHblu*";
 
 
     /// <summary>
@@ -89,12 +90,12 @@ public class TelegramBot
         {
             if (message.Text != null)
             {
-                if (message.Text.ToLower() == "/start")
+                if (message.Text.ToLower() == "/start" || message.Text.ToLower() == "/help")
                 {
                     Console.WriteLine($"Был нажат /start в чате {chatId}");
                     Message sentMessage = await botClient.SendTextMessageAsync(
                         chatId: chatId,
-                        text: $"На сервере запрещено:\n*использование читов, распрыжек, скриптов и прочих хитростей;\n*использование спреев - обманок и спреев с эротическим содержанием;\nиспользование уязвимостей карт;\n*мат в любом проявлении\n(слово сука хоть и литературное, но на сервере расценивается как мат);\n*оскорбления игроков;\n*флуд и крики в голосовой чат\nВсё это карается баном\n\nДанный бот переводит ваши сообщения с русского языка на язык жителей серверов CS 1.6. \n\nСписок дополнительных команд:\n/ChangeSeparator - добавить разделитель, ставящийся между словами(крутым парням рекомендуется точка или тире) - по умолчанию пробел\n/ChangeFrames - выбрать рамки для сообщений\n/GetCoolKeyboard - получить архив с раскладкой для Windows, которая вместо русских букв пишет BOT_Takue(делал не я!)\n",
+                        text: $"На сервере запрещено:\n*использование читов, распрыжек, скриптов и прочих хитростей;\n*использование спреев - обманок и спреев с эротическим содержанием;\nиспользование уязвимостей карт;\n*мат в любом проявлении\n(слово сука хоть и литературное, но на сервере расценивается как мат);\n*оскорбления игроков;\n*флуд и крики в голосовой чат\nВсё это карается баном\n\nДанный бот переводит ваши сообщения с русского языка на язык серверов CS 1.6. \n\nСписок дополнительных команд:\n/ChangeSeparator - добавить разделитель, ставящийся между словами(крутым парням рекомендуется точка или тире) - по умолчанию пробел\n/ChangeFrames - выбрать рамки для сообщений - по умолчанию отсутствуют\n/GetCoolNicknames - получить коллекцию крутых готовых ников, вручную собранных с серверов 1.6\n/GetCoolKeyboard - получить архив с раскладкой для Windows, которая вместо русских букв пишет BOT_Takue(делал не я!)\n/help или /start - получить этот текст заново",
                         cancellationToken: cancellationToken);
                 }
                 else if (message.Text.ToLower() == "/changeseparator")
@@ -120,6 +121,7 @@ public class TelegramBot
                 }
                 else if (message.Text.ToLower() == "/getcoolkeyboard")
                 {
+                    // Попытался отправить файл, как сказано в документации, но у меня что-то не так, и я так и не понял почему. Из-за этого же не удалось реализовать отправку стикеров, изображений и т.п.
                     // Message newMessage = await botClient.SendDocumentAsync(
                     // chatId: chatId,
                     // document: InputFile.FromUri("https://vk.com/doc652669605_676120367?hash=w6dIn8q8zXzuEIKplHHIZv26JZaJBR9VASJnIlkYgZ4&dl=FKUEuAASuldgtrnlh46pY9NqGwG5Rz1vrTRIV55TBFo"),
@@ -130,6 +132,14 @@ public class TelegramBot
                     Message sentMessage = await botClient.SendTextMessageAsync(
                         chatId: chatId,
                         text: "А ФИГУШКИ потому что у меня ошибка с отправлением файлов, которую я не понял, как решить. Только такая ссылка: https://vk.cc/cwKzIs (раскладка заменяет якутскую!)",
+                        cancellationToken: cancellationToken);
+                }
+                else if (message.Text.ToLower() == "/getcoolnicknames")
+                {
+                    Console.WriteLine($"Запрос крутых ников в чате {chatId}");
+                    Message sentMessage = await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: CoolNicknames,
                         cancellationToken: cancellationToken);
                 }
                 else
@@ -182,7 +192,7 @@ public class TelegramBot
                 Console.WriteLine($"Попытка изменить разделитель в чате {chatId}: неудача");
                 Message newMessage = await botClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: "Что-то так себе разделитель. Давай по-новой",
+                text: "Что-то так себе разделитель. Скиньте, пожалуйста, нормальный",
                 cancellationToken: cancellationToken);
             }
             else
@@ -212,7 +222,7 @@ public class TelegramBot
                 replyMarkup: new ReplyKeyboardRemove(),
                 cancellationToken: cancellationToken);
                 left_frame = "xXx_";
-                left_frame = "_xXx";
+                right_frame = "_xXx";
                 state = States.Normal;
             }
             else if (message.Text == "꧁npuMep꧂")

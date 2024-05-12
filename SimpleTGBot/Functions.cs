@@ -96,9 +96,13 @@ namespace SimpleTGBot
                     {
                         sb.Append("A");
                     }
-                    if (x == 'п' || x == 'П')
+                    if (x == 'п')
                     {
                         sb.Append("n");
+                    }
+                    if (x == 'П')
+                    {
+                        sb.Append("/7");
                     }
                     if (x == 'р')
                     {
